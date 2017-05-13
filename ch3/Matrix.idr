@@ -17,7 +17,9 @@ total
 addMatrix : Num a => Vect n (Vect m a) 
   -> Vect n (Vect m a) 
   -> Vect n (Vect m a)
-addMatrix [] [] = []
+addMatrix [] [] = []test
+test
+
 addMatrix (x :: xs) (y :: ys) = zipWith (+) x y :: addMatrix xs ys
 
 
