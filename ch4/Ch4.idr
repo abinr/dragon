@@ -1,3 +1,5 @@
+import Data.Vect
+
 data Direction 
   = North
   | South
@@ -92,3 +94,37 @@ maxMaybe : Ord a => Maybe a -> Maybe a -> Maybe a
 maxMaybe Nothing y = y
 maxMaybe x Nothing = x
 maxMaybe (Just x) (Just y) = Just (max x y)
+
+data PowerSource = Petrol | Pedal | Electric
+
+data Vehicle : PowerSource -> Type where
+     Bicycle : Vehicle Pedal
+     Unicycle : Vehicle Pedal
+     Car : (fuel : Nat) -> Vehicle Petrol
+     Bus : (fuel : Nat) -> Vehicle Petrol
+     Motorcycle : (fuel : Nat) -> Vehicle Petrol
+     Tram : (charge : Nat) -> Vehicle Electric
+     ECar : (charge : Nat) -> Vehicle Electric
+
+wheels : Vehicle power -> Nat
+wheels Bicycle = 2
+wheels Unicycle = 1
+wheels (Car fuel) = 4
+wheels (Bus fuel) = 4
+wheels (Motorcycle fuel) = 2
+wheels (Tram charge) = 0
+wheels (ECar charge) = 4
+
+refuel : Vehicle Petrol -> Vehicle Petrol
+refuel (Car fuel) = Car 100
+refuel (Bus fuel) = Bus 200
+refuel (Motorcycle fuel) = Motorcycle 50
+
+vectTake : (n : Nat) -> Vect (n + m) elem -> Vect n elem
+vectTake Z xs = []
+vectTake (S k) (x::xs) = x :: vectTake k xs
+
+sumEntries : Num a => (pos : Integer) -> Vect n a -> Vect n a -> Maybe a
+sumEntries pos {n} xs ys = case integerToFin pos n of
+                                Nothing => Nothing
+                                (Just i) => Just (index i xs + index i ys)
